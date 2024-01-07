@@ -1,0 +1,15 @@
+---
+checks:
+  a:
+    type: typeA
+    config:
+      a1: a1value
+      a2: a2value
+  b:
+    type: typeB
+    config:
+      b1: 1234
+      b2:
+        - a
+        - b
+        - c
