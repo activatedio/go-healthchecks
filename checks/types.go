@@ -11,9 +11,9 @@ func (s *Status) String() string {
 }
 
 var (
-	StatusUnknown   = Status{""}
-	StatusUnhealthy = Status{"unhealthy"}
-	StatusHealthy   = Status{"healthy"}
+	StatusUnknown   = &Status{""}
+	StatusUnhealthy = &Status{"unhealthy"}
+	StatusHealthy   = &Status{"healthy"}
 )
 
 type CheckResult struct {

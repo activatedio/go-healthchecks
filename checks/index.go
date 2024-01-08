@@ -1,5 +1,9 @@
 package checks
 
-func NewRegistry() map[string]Checker {
-	return map[string]Checker{}
+func NewRegistry() map[string]func() Checker {
+	return map[string]func() Checker{
+		"tcp": func() Checker {
+			return NewTcpChecker()
+		},
+	}
 }

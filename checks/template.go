@@ -4,22 +4,22 @@ import (
 	"context"
 )
 
-type CheckerFunc[C any] func(ctx context.Context, config any) (*Status, error)
+type CheckerFunc[C any] func(ctx context.Context, config *C) (*Status, error)
 
-type checkerTemplate[C any] struct {
+type template[C any] struct {
 	checker CheckerFunc[C]
 }
 
-func (c *checkerTemplate[C]) ZeroConfig() any {
+func (c *template[C]) ZeroConfig() any {
 	return new(C)
 }
 
-func (c *checkerTemplate[C]) Check(ctx context.Context, config any) (*Status, error) {
-	return c.checker(ctx, config)
+func (c *template[C]) Check(ctx context.Context, config any) (*Status, error) {
+	return c.checker(ctx, config.(*C))
 }
 
-func NewCheckerTemplate[C any](checkerFunc CheckerFunc[C]) Checker {
-	return &checkerTemplate[C]{
+func NewFromTemplate[C any](checkerFunc CheckerFunc[C]) Checker {
+	return &template[C]{
 		checker: checkerFunc,
 	}
 }
