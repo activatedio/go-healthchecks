@@ -33,6 +33,7 @@ func NewGrpcChecker() Checker {
 			// TODO - add credentials
 			c, err := grpc.NewClient(fmt.Sprintf("%s:%d", config.Host, config.Port), grpc.WithTransportCredentials(insecure.NewCredentials()))
 			if err != nil {
+				fmt.Println(err.Error())
 				ch <- result{
 					s: StatusUnhealthy,
 				}
@@ -41,6 +42,7 @@ func NewGrpcChecker() Checker {
 			defer c.Close()
 			resp, err := grpc_health_v1.NewHealthClient(c).Check(context.Background(), &grpc_health_v1.HealthCheckRequest{})
 			if err != nil {
+				fmt.Println(err.Error())
 				ch <- result{
 					s: StatusUnhealthy,
 				}
@@ -52,8 +54,9 @@ func NewGrpcChecker() Checker {
 				}
 				return
 			} else {
+				fmt.Println("not healthy")
 				ch <- result{
-					s: StatusHealthy,
+					s: StatusUnhealthy,
 				}
 				return
 			}
