@@ -12,8 +12,8 @@ goland:
 	nix-shell goland.nix
 
 release:
-	go build
-	./go-release perform
+	go install github.com/activatedio/go-release@v0.0.9
+	go-release perform
 	git push origin
 	git push origin --tags
 	GOPROXY=proxy.golang.org go list -m github.com/activatedio/go-healthchecks@$(VERSION)

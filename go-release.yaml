@@ -1,0 +1,4 @@
+---
+verify: make test
+skip-push: true
+skip-clean-workspace-check: true
