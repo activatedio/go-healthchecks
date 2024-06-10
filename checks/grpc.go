@@ -36,6 +36,7 @@ func NewGrpcChecker() Checker {
 				ch <- result{
 					s: StatusUnhealthy,
 				}
+				return
 			}
 			defer c.Close()
 			resp, err := grpc_health_v1.NewHealthClient(c).Check(context.Background(), &grpc_health_v1.HealthCheckRequest{})
@@ -43,15 +44,18 @@ func NewGrpcChecker() Checker {
 				ch <- result{
 					s: StatusUnhealthy,
 				}
+				return
 			}
 			if resp.Status == grpc_health_v1.HealthCheckResponse_SERVING {
 				ch <- result{
 					s: StatusHealthy,
 				}
+				return
 			} else {
 				ch <- result{
 					s: StatusHealthy,
 				}
+				return
 			}
 		}()
 
