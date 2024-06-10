@@ -2,9 +2,10 @@ package checks
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"time"
 )
@@ -31,7 +32,11 @@ func NewGrpcChecker() Checker {
 		go func() {
 
 			// TODO - add credentials
-			c, err := grpc.NewClient(fmt.Sprintf("%s:%d", config.Host, config.Port), grpc.WithTransportCredentials(insecure.NewCredentials()))
+			c, err := grpc.NewClient(fmt.Sprintf("%s:%d", config.Host, config.Port),
+				grpc.WithTransportCredentials(
+					credentials.NewTLS(&tls.Config{
+						InsecureSkipVerify: true,
+					})))
 			if err != nil {
 				fmt.Println(err.Error())
 				ch <- result{
