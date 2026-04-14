@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -111,8 +112,14 @@ func NewHttpChecker() Checker {
 					s: StatusHealthy,
 				}
 			} else {
+				body, _ := io.ReadAll(resp.Body)
+				bodyStr := string(body)
+				if len(bodyStr) > 200 {
+					bodyStr = bodyStr[:200]
+				}
 				ch <- result{
 					s: StatusUnhealthy,
+					e: fmt.Errorf("status code: %d, body: %s", resp.StatusCode, bodyStr),
 				}
 			}
 		}()
