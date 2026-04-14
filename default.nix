@@ -5,7 +5,7 @@ stdenv.mkDerivation {
   name = "go-healthchecks";
 
   buildInputs = with pkgs; [
-    go_1_21
+    go
     gnumake
   ];
 

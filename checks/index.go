@@ -8,5 +8,8 @@ func NewRegistry() map[string]func() Checker {
 		"grpc": func() Checker {
 			return NewGrpcChecker()
 		},
+		"http": func() Checker {
+			return NewHttpChecker()
+		},
 	}
 }
