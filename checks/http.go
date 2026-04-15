@@ -100,6 +100,7 @@ func NewHttpChecker() Checker {
 
 			resp, err := client.Do(req)
 			if err != nil {
+				fmt.Println(err.Error())
 				ch <- result{
 					s: StatusUnhealthy,
 				}
@@ -117,9 +118,9 @@ func NewHttpChecker() Checker {
 				if len(bodyStr) > 200 {
 					bodyStr = bodyStr[:200]
 				}
+				fmt.Printf("status code: %d, body: %s\n", resp.StatusCode, bodyStr)
 				ch <- result{
 					s: StatusUnhealthy,
-					e: fmt.Errorf("status code: %d, body: %s", resp.StatusCode, bodyStr),
 				}
 			}
 		}()
